@@ -1,15 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import "./App.css";
 import axios from "axios";
-
-
 import {
   createBrowserRouter,
   Outlet,
   RouterProvider,
-  Navigate
+  useNavigate
 } from "react-router-dom";
 
 import Home from "./Pages/Home/Home";
@@ -17,9 +15,6 @@ import Profile from "./Pages/Profile/profile";
 import Navbar from "./components/navbar/Navbar"
 import LeftBar from "./components/leftBar/LeftBar"
 import RightBar from "./components/rightBar/RightBar";
-import { UserContext } from './components/UserContext';
-
-
 
 
 const App = () => {
@@ -43,13 +38,20 @@ const App = () => {
   };
 
   const ProtectedRoute = ({children})=>{
-    const {username, id} = useContext(UserContext);
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = useState(null);
 
-    console.log({username, id});
+    useEffect(() => {
+      if (!localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
+        navigate("/login");
+      } else {
+        setCurrentUser(
+          JSON.parse(localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY))
+        );
+        console.log("app");
+      }
+    }, []);
     
-    if(!username){
-      return <Navigate to="/login"/>
-    }
     return children
   } 
 

@@ -51,12 +51,47 @@ app.post("/register", async (req, res) => {
     });
     // console.log(createdUser);
 
-    jwt.sign({userId: createdUser._id, username}, jwtSecret, {}, (err, token) => {
-      if (err) throw err;
-      res.cookie("token", token, {sameSite: "none", secure: true}).status(201).json({
-        id: createdUser._id
-      });
-    });
+    // jwt.sign({userId: createdUser._id, username}, jwtSecret, {}, (err, token) => {
+    //   if (err) throw err;
+    //   res.cookie("token", token, {sameSite: "none", secure: true}).status(201).json({
+    //     id: createdUser._id
+    //   });
+    // });
+
+    // delete createdUser._doc.password;
+    // console.log(createdUser);
+    const user = {
+      username: createdUser.username,
+      _id: createdUser._id
+    };
+    // console.log(user);
+    return res.json({status: true, user});
+
+  } catch (err) {
+    if (err) throw err;
+    res.status(500).json("error");
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const {username, password} = req.body;
+  try {
+    const foundUser = await User.findOne({username});
+    if (!foundUser) {
+      console.log("no user");
+      return res.json({msg: "Incorrect Username", status: false});
+    }
+    const isPasswordValid = bcrypt.compareSync(password, foundUser.password);
+    if (!isPasswordValid) {
+      console.log("wrong password");
+      return res.json({msg: "Incorrect Password", status: false});
+    }
+    const user = {
+      username: foundUser.username,
+      _id: foundUser._id
+    };
+    // console.log(user);
+    return res.json({status: true, user});
 
   } catch (err) {
     if (err) throw err;

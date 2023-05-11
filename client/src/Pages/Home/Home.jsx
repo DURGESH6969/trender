@@ -1,13 +1,26 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import "./home.scss";
-import { UserContext } from "../../components/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const {username} = useContext(UserContext);
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    if (!localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
+      navigate("/login");
+    } else {
+      setCurrentUser(
+        JSON.parse(localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY))
+      );
+      console.log("home");
+    }
+  }, []);
+
   return (
     <div className='home'>
       <h1>Home</h1>
-      <h3>{username}</h3>
+      <h3>{currentUser?.username}</h3>
     </div>
   )
 }

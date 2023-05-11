@@ -1,27 +1,36 @@
-import { useContext, useState } from "react"
-import { Link, Navigate, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./Register.scss"
-import { UserContext } from "../../components/UserContext"
 
 const Register = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  const {setUsername:setLoggedInUsername, setId} = useContext(UserContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
+      console.log("refresh in register");
+      navigate("/");
+    }
+  }, []);
 
   async function handleSubmit(ev) {
     ev.preventDefault();
     const {data} = await axios.post("/register", {name, username, email, password});
+
     // console.log(data);
-    setLoggedInUsername(username);
-    setId(data.id);
-    navigate("/");
-    // console.log("navigate");
+    if (data.status === true) {
+      localStorage.setItem(
+        import.meta.env.VITE_LOCALHOST_KEY,
+        JSON.stringify(data.user)
+      );
+      console.log("set in register");
+      navigate("/");
+    }
   }
 
   return (
