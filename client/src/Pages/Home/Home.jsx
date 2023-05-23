@@ -7,13 +7,9 @@ const Home = () => {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
+    console.log("at home");
     if (!localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
       navigate("/login");
-    } else {
-      setCurrentUser(
-        JSON.parse(localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY))
-      );
-      console.log("home");
     }
   }, []);
 

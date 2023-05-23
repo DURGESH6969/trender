@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./Register.scss"
+import { UserContext } from "../../context/UserContext"
+import GoogleIcon from '@mui/icons-material/Google';
+
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -9,29 +12,37 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
+  const {authenticated, setAuthenticated} = useContext(UserContext);
 
-  useEffect(() => {
-    if (localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
-      console.log("refresh in register");
-      navigate("/");
-    }
-  }, []);
+  const navigate = useNavigate();
 
   async function handleSubmit(ev) {
     ev.preventDefault();
-    const {data} = await axios.post("/register", {name, username, email, password});
+    const {data} = await axios.post("/auth/register", {name, username, email, password});
 
-    // console.log(data);
     if (data.status === true) {
+      setAuthenticated(true);
       localStorage.setItem(
         import.meta.env.VITE_LOCALHOST_KEY,
-        JSON.stringify(data.user)
+        JSON.stringify({status: true}),
       );
       console.log("set in register");
       navigate("/");
     }
   }
+
+  const googleAuth = () => {
+    window.open(
+      `${import.meta.env.VITE_API_URL}/auth/google`,
+      "_self"
+    );
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="register">
@@ -81,6 +92,13 @@ const Register = () => {
               />
               <button type="submit">Register</button>
             </form>
+
+            <button onClick={googleAuth}>
+              <GoogleIcon />
+              <span className="google-register">
+                Register with Google
+              </span>
+            </button>
           </div>
         </div>
       </div>

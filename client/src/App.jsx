@@ -5,6 +5,7 @@ import "./App.css";
 import axios from "axios";
 import {
   createBrowserRouter,
+  Navigate,
   Outlet,
   RouterProvider,
   useNavigate
@@ -15,13 +16,15 @@ import Profile from "./Pages/Profile/profile";
 import Navbar from "./components/navbar/Navbar"
 import LeftBar from "./components/leftBar/LeftBar"
 import RightBar from "./components/rightBar/RightBar";
+import { UserContext } from './context/UserContext';
 
 
 const App = () => {
-
+  
   axios.defaults.baseURL = "http://localhost:4040";
   axios.defaults.withCredentials = true;
 
+  
   const Layout=()=>{
     return(
       <div>
@@ -39,20 +42,15 @@ const App = () => {
 
   const ProtectedRoute = ({children})=>{
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
+      console.log("check");
       if (!localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
         navigate("/login");
-      } else {
-        setCurrentUser(
-          JSON.parse(localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY))
-        );
-        console.log("app");
       }
     }, []);
     
-    return children
+    return children;
   } 
 
   const router = createBrowserRouter([

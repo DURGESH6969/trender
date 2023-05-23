@@ -2,46 +2,32 @@ import { createContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import UserReducer from "./UserReducer";
 
-const initialState = {
-  username: null,
-  id: null,
-};
 
-export const UserContext = createContext(initialState);
+export const UserContext = createContext();
 
 export function UserContextProvider({children}) {
-  // const [username, setUsername] = useState(null);
-  // const [id, setId] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
-  const [state, dispatch] = useReducer(UserReducer, initialState);
-  
-  function logInUser(userDetails) {
-    dispatch({
-      type: "LOG_IN_USER",
-      payload: userDetails,
-    });
-  }
-  
-  // useEffect(() => {
-  //   function getUserDetails() {
-  //     axios.get("/home").then(response => {
-  //       // console.log(response.data);
-  //       // setId(response.data.userId);
-  //       // setUsername(response.data.username);
-  //       const userDetails = {
-  //         username: response.data.username,
-  //         id: response.data.userId,
-  //       };
-  //       logInUser(userDetails);
-  //       console.log(userDetails);
-  //     });
-  //   }
-  //   getUserDetails();
-  // }, []);
+  useEffect(() => {
+    console.log("context");
+    axios.get("/auth/profile").then(response => {
+      setAuthenticated(response.data.status);
+      localStorage.setItem(
+        import.meta.env.VITE_LOCALHOST_KEY,
+        JSON.stringify({status: true}),
+      );
+    })
+    .catch((error) => {
+      setAuthenticated(false);
+      if (localStorage.getItem(import.meta.env.VITE_LOCALHOST_KEY)) {
+        localStorage.removeItem(import.meta.env.VITE_LOCALHOST_KEY);
+      }
+    })
+  }, []);
   
   
   return (
-    <UserContext.Provider value={{username: state.username, id: state.id, logInUser}}>
+    <UserContext.Provider value={{authenticated, setAuthenticated}}>
       {children}
     </UserContext.Provider>
   )
