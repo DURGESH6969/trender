@@ -139,66 +139,7 @@ const RightBar = () => {
               <span>Durgesh Gupta</span>
             </div>
           </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src={avatar}
-                alt=""
-              />
-              <div className="online" />
-              <span>Durgesh Gupta</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src={avatar}
-                alt=""
-              />
-              <div className="online" />
-              <span>Durgesh Gupta</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src={avatar}
-                alt=""
-              />
-              <div className="online" />
-              <span>Durgesh Gupta</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src={avatar}
-                alt=""
-              />
-              <div className="online" />
-              <span>Durgesh Gupta</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src={avatar}
-                alt=""
-              />
-              <div className="online" />
-              <span>Durgesh Gupta</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src={avatar}
-                alt=""
-              />
-              <div className="online" />
-              <span>Durgesh Gupta</span>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>

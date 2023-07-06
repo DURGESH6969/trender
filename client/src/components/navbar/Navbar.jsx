@@ -7,6 +7,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from 'react-router-dom';
 import avatar from "../../assets/avatar.jpg"
 
@@ -26,6 +27,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="right">
+      <AddCircleIcon/>
       <Person2OutlinedIcon/>
       <EmailOutlinedIcon/>
       <NotificationsOutlinedIcon/>
